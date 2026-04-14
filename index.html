@@ -19,11 +19,20 @@
     background-size: cover;
   }
 
-  .time {
+  .clock-container {
     position: absolute;
     top: 20px;
     right: 20px;
     color: white;
+    text-align: right;
+    letter-spacing: 2px;
+  }
+
+  .date {
+    font-size: 18px;
+  }
+
+  .time {
     font-size: 32px;
     font-weight: bold;
   }
@@ -43,14 +52,35 @@
 <body>
 
 <div class="background"></div>
-<div class="time" id="clock"></div>
+
+<div class="clock-container">
+  <div class="date" id="date"></div>
+  <div class="time" id="time"></div>
+</div>
+
 <div class="text">OUT OF ORDER</div>
 
 <script>
 function updateClock() {
   const now = new Date();
-  const time = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-  document.getElementById('clock').innerHTML = time;
+
+  // FORMAT DATE → 14-Apr-2026
+  const day = String(now.getDate()).padStart(2, '0');
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const month = months[now.getMonth()];
+  const year = now.getFullYear();
+
+  const formattedDate = `${day}-${month}-${year}`;
+
+  // FORMAT TIME → 14:32
+  const formattedTime = now.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+
+  document.getElementById('date').innerHTML = formattedDate;
+  document.getElementById('time').innerHTML = formattedTime;
 }
 
 setInterval(updateClock, 1000);
